@@ -5,6 +5,10 @@ import Button from '../../UI/Button/Button';
 
 class OrderSummary extends Component {
   // for optimizing purpose
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   componentDidUpdate() {
     console.log('[OrderSummary.js] componentDidUpdate');
   };
@@ -31,9 +35,9 @@ class OrderSummary extends Component {
         <Button btnType="Danger"
           clicked={this.props.purchaseCancel}
         >CANCEL</Button>
-        <Button btnType="Success"
-          clicked={this.props.purchaseContinue}
-        >CONTINUE</Button>
+          <Button btnType="Success"
+            clicked={this.props.purchaseContinue}
+          >CONTINUE</Button>
       </Aux>
     )
   }
