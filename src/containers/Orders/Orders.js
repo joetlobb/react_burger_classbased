@@ -1,37 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import axios from '../../axios-orders';
 import Order from '../../components/Order/Order';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Aux from '../../hoc/Aux/Aux';
 import Modal from '../../components/UI/Modal/Modal';
+import * as actions from '../../store/actions/index';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
-  state = {
-    orders: [],
-    loading: true,
-    error: false,
-  }
+  // state = {
+  //   orders: [],
+  //   loading: true,
+  //   error: false,
+  // }
 
   componentDidMount() {
-
-    axios.get('/orders.json')
-      .then(response => {
-        // console.log(response.data);
-        const fetchedOrders = [];
-        for (let key in response.data) {
-          fetchedOrders.push({
-            ...response.data[key],
-            id: key
-          })
-        }
-        // console.log(fetchedOrders);
-        this.setState({ loading: false, orders: fetchedOrders, error: false })
-        // console.log(this.state.orders)
-      })
-      .catch(err => {
-        console.log(err);
-        this.setState({ loading: false, error: true  })
-      })
+    this.props.onFetchOrders();
   }
 
   errorConfirmedHandler = () => {
@@ -39,23 +25,36 @@ class Orders extends Component {
   }
 
   render() {
+    let orders = <Spinner />
+    if (!this.props.loading) {
+      orders = this.props.orders.map(order => (
+        <Order key={order.id}
+          ingredients={order.ingredients}
+          price={+order.price} />
+      ))
+    }
     return (
       <Aux>
-        <Modal
+        {/* <Modal
           show={this.state.error}
           modalClosed={this.errorConfirmedHandler}
-        >{this.state.error ? <p style={{ margin: '0' }} >Error!</p> : null}
-        </Modal>
-
-        {this.state.orders.map(order => (
-          <Order key={order.id}
-            ingredients={order.ingredients}
-            price={+order.price} />
-        ))}
-
+        >{this.props.error ? <p style={{ margin: '0' }} >Error!</p> : null}
+        </Modal> */}
+        {orders}
       </Aux>
     );
   }
 }
 
-export default withErrorHandler(Orders, axios);
+const mapStateToProps = state => {
+  return {
+    orders: state.order.orders,
+    loading: state.order.loading
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchOrders: () => dispatch(actions.fetchOrders())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
