@@ -5,7 +5,7 @@ import axios from '../../axios-orders';
 import Order from '../../components/Order/Order';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Aux from '../../hoc/Aux/Aux';
-import Modal from '../../components/UI/Modal/Modal';
+// import Modal from '../../components/UI/Modal/Modal';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
