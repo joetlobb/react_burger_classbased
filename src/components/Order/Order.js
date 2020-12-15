@@ -11,7 +11,7 @@ const order = (props) => {
       amount: props.ingredients[igName] // access value
     })
   }
-  console.log(ingredients);
+  // console.log(ingredients);
 
   const ingredientsOutput = ingredients.map(ig => {
     return <span key={ig.name}
