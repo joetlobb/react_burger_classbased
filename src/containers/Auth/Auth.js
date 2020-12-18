@@ -7,6 +7,7 @@ import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions/index';
+import { updateObject } from '../../shared/utility';
 
 class Auth extends Component {
   state = {
@@ -39,7 +40,8 @@ class Auth extends Component {
         valid: false,
         touched: false
       }
-    }
+    },
+    disable: true
   };
 
   componentDidMount() {
@@ -71,17 +73,25 @@ class Auth extends Component {
   };
 
   inputChangedHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
-        value: event.target.value,
-        valid: this.checkValidity(event.target.value,
-          this.state.controls[controlName].validation),
-        touched: true
+    const updatedControls = updateObject(
+      this.state.controls,
+      {
+        [controlName]: updateObject(
+          this.state.controls[controlName],
+          {
+            value: event.target.value,
+            valid: this.checkValidity(event.target.value,
+              this.state.controls[controlName].validation),
+            touched: true
+          }
+        )
       }
-    };
-    this.setState({ controls: updatedControls });
+    );
+    let disable = true;
+    if (updatedControls.email.touched && updatedControls.password.touched) {
+      disable = false;
+    }
+    this.setState({ controls: updatedControls, disable: disable });
   };
 
   submitHandler = (event, method) => {
@@ -134,8 +144,14 @@ class Auth extends Component {
         {errorMessage}
         <form>
           {form}
-          <Button btnType="Success" clicked={(event) => this.submitHandler(event, 'login')}>LOGIN</Button>
-          <Button btnType="Danger" clicked={(event) => this.submitHandler(event, 'signup')}>SIGNUP</Button>
+          <Button btnType="Success"
+            clicked={(event) => this.submitHandler(event, 'login')}
+            disabled={this.state.disable}
+          >LOGIN</Button>
+          <Button btnType="Danger"
+            clicked={(event) => this.submitHandler(event, 'signup')}
+            disabled={this.state.disable}
+          >SIGNUP</Button>
         </form>
 
       </div>
