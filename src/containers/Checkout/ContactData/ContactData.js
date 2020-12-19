@@ -96,18 +96,10 @@ class ContactData extends Component {
       },
     },
     formIsValid: false,
-    // loading: false
   }
-
-  // componentDidMount() {
-  //   console.log(this.props)
-  // }
 
   orderHandler = (event) => {
     event.preventDefault();
-    // console.log(this.props.ingredients);
-    // this.setState({ loading: true });
-
     const formData = {};
     for (let formElementIdentifier in this.state.orderForm) {
       formData[formElementIdentifier] =
@@ -142,7 +134,6 @@ class ContactData extends Component {
     for (let inputIdentifier in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
     }
-    // console.log(formIsValid);
     this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid });
   }
 

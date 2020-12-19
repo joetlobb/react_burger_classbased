@@ -13,10 +13,6 @@ class Modal extends Component {
       // (nextProps.children && nextProps.children.type.name === 'spinner')
   }
 
-  componentDidUpdate() {
-    console.log('[Modal.js] componentDidUpdate')
-  }
-
   render() {
     return (
       <Aux>

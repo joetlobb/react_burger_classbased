@@ -4,14 +4,12 @@ import classes from './Order.module.css';
 
 const order = (props) => {
   const ingredients = [];
-  // console.log(props.ingredients);
   for (let igName in props.ingredients) {
     ingredients.push({
       name: igName, //access key
       amount: props.ingredients[igName] // access value
     })
   }
-  // console.log(ingredients);
 
   const ingredientsOutput = ingredients.map(ig => {
     return <span key={ig.name}
